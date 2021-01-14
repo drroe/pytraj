@@ -550,27 +550,6 @@ def distance(p1, p2, image=None, image_type=None, *args, **kwd):
         return sqrt(DIST2_NoImage(v1.thisptr[0], v2.thisptr[0]))
     else:
         raise NotImplementedError("not yet supported")
-# distutils: language = c++
-
-
-cdef class ImagedAction:
-    def __cinit__(self):
-        self.thisptr = new _ImagedAction()
-
-    def __dealloc__(self):
-        del self.thisptr
-
-    # def ImagedAction(self):
-
-    # def void InitImaging(self,bint imageIn):
-
-    # def void SetupImaging(self,Box::BoxType parmboxtype):
-
-    # def bint ImagingEnabled(self):
-
-    # def bint UseImage(self):
-
-    # def ImagingType ImageType(self):
 
 # distutil: language = c++
 import math
