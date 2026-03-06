@@ -48,16 +48,6 @@ cdef extern from "Topology.h":
     cdef cppclass _Topology "Topology" nogil:
         _Topology()
         int DetermineMolecules()
-        void SetOffset(double oIn)
-        void SetDebug(int dIn)
-        void SetIpol(int iIn)
-        void SetPindex(int pIn)
-        void Increase_Frames(int fIn)
-        void SetTag(const string& t)
-        void SetVelInfo(bint v)
-        void SetNrepDim(int n)
-        void SetGBradiiSet(const string& s)
-        void SetParmName(const string&, const _FileName&)
         void SetDistMaskRef(_Frame)
         _Atom& GetAtomView "SetAtom" (int idx)
         const string& Tag() const
@@ -65,8 +55,38 @@ cdef extern from "Topology.h":
         int Pindex() const
         int Natom() const
         int Nres() const
+        int NatomPerMol() const
         int Nmol() const
         int Nsolvent() const
+        int NoAmberParm() const
+        bint IsBondPresentParm(const _Atom& a1, const _Atom& a2) const
+        bint IsAnglePresentParm(const _Atom& a1, const _Atom& a2, const _Atom& a3) const
+        bint IsDihedralPresentParm(const _Atom& a1, const _Atom& a2, const _Atom& a3, const _Atom& a4) const
+        void PrintBondInfo(const string& a1, int resIdOrNum, const string& a2, int resId2OrNum2, bint printZero) const
+        void PrintAngleInfo(const string& a1, int resIdOrNum, const string& a2, int resId2OrNum2, const string& a3, int resId3OrNum3, bint printZero) const
+        void PrintDihedralInfo(const string& a1, int resIdOrNum, const string& a2, int resId2OrNum2, const string& a3, int resId3OrNum3, const string& a4, int resId4OrNum4, bint printZero) const
+        bint SetBondArray(BondParmArray&)
+        bint SetAngleArray(AngleParmArray&)
+        bint SetDihedralArray(DihedralParmArray&)
+        void SetNonbondArray(NonbondArray&)
+        bint SetupIntegerMasks(int, int)
+        void IntegerMask_CheckParmtop(vector[int]&) const
+        void IntegerMask_CheckParmtop2(vector[int]&) const
+        int FindBondParameter(_Atom& a1, _Atom& a2) const
+        int FindAngleParameter(_Atom& a1, _Atom& a2, _Atom& a3) const
+        int FindDihedralParameter(_Atom& a1, _Atom& a2, _Atom& a3, _Atom& a4) const
+        void NonbondInfo(int, int, double&, double&)
+        void NonbondInfo2(int, int, int, double&, double&, double&, double&)
+        vector[char] GetParmtopCodes()
+        int Natom0() const
+        int Nres0() const
+        void ComputeLJIndex(vector[int]&, int, int, double&, double&) const
+        int LjTerms() const
+        int LjTerms2() const
+        int HBondTerms() const
+        int GetLjType(int atomIdx) const
+        double GetA(int idx) const
+        double GetB(int idx) const
         int Nframes() const
         int NextraPts() const
         bint HasVelInfo() const

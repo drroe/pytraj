@@ -1053,11 +1053,6 @@ cdef class Topology:
         def __get__(self):
             return self.thisptr.HeavyAtomCount()
 
-    property n_atom_types:
-        """Number of unique atom types"""
-        def __get__(self):
-            return self.thisptr.NatomTypes()
-
     property has_charges:
         """True if any atom has non-zero charge"""
         def __get__(self):
@@ -1249,45 +1244,56 @@ cdef class Topology:
     property bonds:
         def __get__(self):
             """return bond iterator"""
-            # both noh and with-h bonds
-            cdef BondArray bondarray, bondarray_h
-            cdef BondType btype = BondType()
+            cdef BondType btype
+            cdef int i
 
-            bondarray = self.thisptr.Bonds()
-            bondarray_h = self.thisptr.BondsH()
-            bondarray.insert(bondarray.end(), bondarray_h.begin(), bondarray_h.end())
-
-            for btype.thisptr[0] in bondarray:
-                yield btype
+            # Get regular bonds
+            for i in range(self.thisptr.Bonds().size()):
                 btype = BondType()
+                btype.thisptr[0] = self.thisptr.Bonds()[i]
+                yield btype
+
+            # Get hydrogen bonds
+            for i in range(self.thisptr.BondsH().size()):
+                btype = BondType()
+                btype.thisptr[0] = self.thisptr.BondsH()[i]
+                yield btype
 
     property angles:
         def __get__(self):
             """return angle iterator"""
-            cdef AngleArray anglearray, anglearray_h
-            cdef AngleType atype = AngleType()
+            cdef AngleType atype
+            cdef int i
 
-            anglearray = self.thisptr.Angles()
-            anglearray_h = self.thisptr.AnglesH()
-            anglearray.insert(anglearray.end(), anglearray_h.begin(), anglearray_h.end())
-
-            for atype.thisptr[0] in anglearray:
-                yield atype
+            # Get regular angles
+            for i in range(self.thisptr.Angles().size()):
                 atype = AngleType()
+                atype.thisptr[0] = self.thisptr.Angles()[i]
+                yield atype
+
+            # Get hydrogen angles
+            for i in range(self.thisptr.AnglesH().size()):
+                atype = AngleType()
+                atype.thisptr[0] = self.thisptr.AnglesH()[i]
+                yield atype
 
     property dihedrals:
         def __get__(self):
             """return dihedral iterator"""
-            cdef DihedralArray dharr, dharr_h
-            cdef DihedralType dhtype = DihedralType()
+            cdef DihedralType dhtype
+            cdef int i
 
-            dharr = self.thisptr.Dihedrals()
-            dharr_h = self.thisptr.DihedralsH()
-            dharr.insert(dharr.end(), dharr_h.begin(), dharr_h.end())
-
-            for dhtype.thisptr[0] in dharr:
-                yield dhtype
+            # Get regular dihedrals
+            for i in range(self.thisptr.Dihedrals().size()):
                 dhtype = DihedralType()
+                dhtype.thisptr[0] = self.thisptr.Dihedrals()[i]
+                yield dhtype
+
+            # Get hydrogen dihedrals
+            for i in range(self.thisptr.DihedralsH().size()):
+                dhtype = DihedralType()
+                dhtype.thisptr[0] = self.thisptr.DihedralsH()[i]
+                yield dhtype
 
     property bond_indices:
         def __get__(self):
